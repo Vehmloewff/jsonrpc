@@ -40,4 +40,4 @@ alias drake="deno run -A .config/Drakefile.ts"
 drake live
 ```
 
-Then head on over to https://localhost:3000
+The live tests should be running on http://localhost:3000
