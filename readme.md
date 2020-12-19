@@ -12,6 +12,8 @@ const app = createJsonrpcServer()
 
 app.method('greet', ({ name }) => `Hello, ${name}!`)
 
+app.listen({ port: 3000 }) // You can use `app.oakMiddleware()` or `app.addToHttpServer(server)` to use an existing server.
+
 // Client
 import { connect } from 'https://denopkg.com/Vehmloewff/jsonrpc/client.ts'
 
@@ -21,11 +23,6 @@ await connection.call('greet', { name: 'Vehmloewff' }) // -> Hello, Vehmloewff!
 ```
 
 There is a more complete example in the [test](/test) folder.
-
-## Docs
-
--   [Server](https://doc.deno.land/https/denopkg.com/Vehmloewff/jsonrpc/server.ts)
--   [Client](https://doc.deno.land/https/denopkg.com/Vehmloewff/jsonrpc/client.ts)
 
 ## Contributing
 
