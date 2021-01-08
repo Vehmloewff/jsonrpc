@@ -30,6 +30,8 @@ export interface ConnectOptions {
 	retryInterval?: number
 }
 
+export type Connection = ReturnType<typeof connect>
+
 /**
  * Opens a websocket connection
  * @param url The url to connect to.  Should start with `ws:` or `wss:`
