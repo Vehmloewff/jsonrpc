@@ -37,3 +37,8 @@ export function delay(time: number) {
 		setTimeout(() => resolve(), time)
 	})
 }
+
+export function pathsAreEqual(actual: string, expected: string | undefined) {
+	if (expected === '*') return true
+	return actual === (expected || '/')
+}

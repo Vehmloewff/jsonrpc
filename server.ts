@@ -1,7 +1,7 @@
 import type { ServerRequest } from 'https://deno.land/std@0.80.0/http/mod.ts'
 import { WebSocket, acceptWebSocket, isWebSocketPingEvent, isWebSocketCloseEvent } from 'https://deno.land/std@0.80.0/ws/mod.ts'
 import { ErrorResponse, Parameters, paramsEncoder } from './shared.ts'
-import { makeArray, asyncForEach, lazyJSONParse } from './utils.ts'
+import { makeArray, asyncForEach, lazyJSONParse, pathsAreEqual } from './utils.ts'
 import { v4 } from 'https://deno.land/std@0.80.0/uuid/mod.ts'
 import { Middleware } from 'https://deno.land/x/oak@v6.4.0/mod.ts'
 import { Server, serve } from 'https://deno.land/std@0.80.0/http/server.ts'
@@ -234,7 +234,7 @@ export function createJsonrpcServer(options: RpcServerOptions = {}) {
 	 */
 	function oakMiddleware(): Middleware {
 		return (context, next) => {
-			if (context.request.url.pathname === (options.path || '/'))
+			if (pathsAreEqual(context.request.url.pathname, options.path))
 				try {
 					createConnection({
 						conn: context.request.serverRequest.conn,
@@ -254,7 +254,7 @@ export function createJsonrpcServer(options: RpcServerOptions = {}) {
 	 */
 	async function addToHttpServer(server: Server) {
 		for await (const req of server) {
-			if (req.url === (options.path || '/'))
+			if (pathsAreEqual(req.url, options.path))
 				try {
 					createConnection({
 						conn: req.conn,
