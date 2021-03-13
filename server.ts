@@ -26,6 +26,11 @@ export interface RpcServerOptions {
 	clientAdded?(params: Parameters, socket: WebSocket): Promise<{ error: ErrorResponse } | string | null>
 
 	/**
+	 * Called when a socket is closed.
+	 */
+	clientRemoved?(clientId: string): Promise<void> | void
+
+	/**
 	 * The path to listen for connections at.
 	 * If '*' is specified, all incoming ws requests will be used
 	 * @default '/' // upgrade all connections
@@ -177,6 +182,7 @@ export function createJsonrpcServer(options: RpcServerOptions = {}) {
 					// ping
 				} else if (isWebSocketCloseEvent(ev)) {
 					// close
+					if (options.clientRemoved) await options.clientRemoved(clientId)
 					socks.delete(clientId)
 				}
 			}
